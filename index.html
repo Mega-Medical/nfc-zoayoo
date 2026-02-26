@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 카카오톡/SNS 공유 설정 (Open Graph) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="메가메디칼 김화찬 지사장">
     <meta property="og:description" content="기술연구소 기획인증팀, 김화찬입니다.">
@@ -21,6 +20,7 @@
             --brand-orange: #F15A24;
             --brand-blue: #004C97;
             --text-main: #333333;
+            --doro-pink: #FFB7C5;
         }
 
         body {
@@ -32,6 +32,13 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Doro Mode Background */
+        body.doro-mode {
+            background-color: #FFF0F5;
         }
 
         .card-container {
@@ -43,6 +50,13 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             position: relative;
             border: 1px solid #f0f0f0;
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .doro-mode .card-container {
+            border-color: var(--doro-pink);
+            box-shadow: 0 20px 40px rgba(255, 183, 197, 0.4);
         }
 
         .profile-header {
@@ -51,6 +65,11 @@
             text-align: right;
             position: relative;
             border-bottom: 8px solid var(--brand-orange);
+            transition: border-color 0.5s ease;
+        }
+
+        .doro-mode .profile-header {
+            border-bottom-color: var(--doro-pink);
         }
 
         .logo-box {
@@ -87,6 +106,14 @@
             align-items: center;
             box-shadow: 0 10px 25px rgba(241, 90, 36, 0.2);
             border: 3px solid var(--brand-orange);
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .doro-mode .avatar-circle {
+            border-color: var(--doro-pink);
+            box-shadow: 0 10px 25px rgba(255, 183, 197, 0.5);
+            transform: rotate(360deg);
         }
 
         .avatar-initial {
@@ -95,9 +122,17 @@
             color: var(--brand-orange);
         }
 
-        .content {
-            padding: 65px 24px 35px;
+        .doro-img {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
+
+        .doro-mode .avatar-initial { display: none; }
+        .doro-mode .doro-img { display: block; }
+
+        .content { padding: 65px 24px 35px; }
 
         .brand-btn {
             background-color: var(--brand-orange);
@@ -105,31 +140,77 @@
             box-shadow: 0 6px 15px rgba(241, 90, 36, 0.3);
             transition: all 0.2s;
         }
-
-        .brand-btn:active { transform: scale(0.97); }
+        .doro-mode .brand-btn { background-color: var(--doro-pink); box-shadow: 0 6px 15px rgba(255, 183, 197, 0.5); }
 
         .soft-item {
             background: #FFF9F7;
             border: 1px solid #FFEBE5;
             transition: all 0.2s;
         }
+        .doro-mode .soft-item { background: #FFF0F5; border-color: #FFD1DC; }
 
-        .soft-item:hover { 
-            border-color: var(--brand-orange);
+        /* Floating Actions */
+        .floating-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .lang-switch {
             background: white;
+            padding: 4px;
+            border-radius: 50px;
+            display: flex;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .canada-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            background: #FFEDED;
-            color: #D32F2F;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
-            margin-bottom: 8px;
+        .lang-btn {
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
+        .lang-btn.active {
+            background: var(--brand-orange);
+            color: white;
+        }
+
+        .doro-trigger {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 900;
+            color: #ccc;
+            border: 2px solid transparent;
+        }
+
+        .doro-trigger:hover { transform: scale(1.1); }
+        .doro-trigger.active {
+            border-color: var(--doro-pink);
+            color: var(--doro-pink);
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Toast */
         #toast {
             visibility: hidden;
             background-color: #333;
@@ -138,18 +219,29 @@
             border-radius: 50px;
             padding: 12px 24px;
             position: fixed;
-            z-index: 100;
+            z-index: 1000;
             left: 50%;
             bottom: 30px;
             transform: translateX(-50%);
         }
-
         #toast.show { visibility: visible; animation: fadein 0.4s, fadeout 0.4s 2.6s; }
+
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
+
+    <!-- Floating UI -->
+    <div class="floating-controls">
+        <div class="lang-switch">
+            <div id="btn-ko" class="lang-btn active" onclick="setLang('ko')">KO</div>
+            <div id="btn-en" class="lang-btn" onclick="setLang('en')">EN</div>
+        </div>
+        <div id="doro-btn" class="doro-trigger" onclick="toggleDoro()" title="DORO Mode">
+            DORO
+        </div>
+    </div>
 
     <div class="card-container mx-4">
         <!-- Header -->
@@ -160,6 +252,8 @@
             </div>
             <div class="avatar-circle">
                 <span class="avatar-initial">AK</span>
+                <!-- 깃허브 업로드 시 파일명을 정확히 일치시켜야 합니다 -->
+                <img src="image_e97725.png" alt="Doro" class="doro-img">
             </div>
         </div>
 
@@ -167,40 +261,46 @@
         <div class="content">
             <div class="mb-10">
                 <h1 class="text-3xl font-extrabold text-slate-800 flex items-baseline gap-2">
-                    김화찬 <span class="text-lg font-normal text-slate-400">Andrew Kim</span>
+                    <span data-ko="김화찬" data-en="Andrew Kim">김화찬</span>
+                    <span class="text-lg font-normal text-slate-400" id="sub-name">Andrew Kim</span>
                 </h1>
-                <p class="text-sm font-bold text-orange-600 mt-1">기술연구소 기획인증팀 | 지사장</p>
-                <div class="h-1.5 w-12 bg-[#F15A24] mt-4 rounded-full"></div>
+                <p class="text-sm font-bold text-orange-600 mt-1" 
+                   data-ko="기술연구소 기획인증팀 | 지사장" 
+                   data-en="R&D Planning & Certification Team | Branch Manager">
+                    기술연구소 기획인증팀 | 지사장
+                </p>
+                <div class="h-1.5 w-12 bg-[#F15A24] mt-4 rounded-full" id="accent-bar"></div>
             </div>
 
             <!-- Actions -->
             <div class="space-y-4 mb-10">
-                <button onclick="downloadVCard()" class="w-full brand-btn py-4.5 rounded-2xl font-bold flex items-center justify-center gap-3 text-lg">
-                    <i class="fa-solid fa-address-book"></i> 연락처 저장하기
+                <button onclick="downloadVCard()" class="w-full brand-btn py-4.5 rounded-2xl font-bold flex items-center justify-center gap-3 text-lg h-14">
+                    <i class="fa-solid fa-address-book"></i> 
+                    <span data-ko="연락처 저장하기" data-en="Save Contact">연락처 저장하기</span>
                 </button>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <a href="tel:01068075802" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
-                        <i class="fa-solid fa-phone text-[#F15A24] text-xl group-hover:scale-110 transition-transform"></i>
-                        <span class="text-xs font-bold text-slate-600">휴대폰 (KR)</span>
+                        <i class="fa-solid fa-phone text-[#F15A24] text-xl group-hover:scale-110 transition-transform doro-icon"></i>
+                        <span class="text-xs font-bold text-slate-600" data-ko="휴대폰 (KR)" data-en="Mobile (KR)">휴대폰 (KR)</span>
                     </a>
                     <a href="mailto:hckim@megamedical.co.kr" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
-                        <i class="fa-solid fa-envelope text-[#F15A24] text-xl group-hover:scale-110 transition-transform"></i>
-                        <span class="text-xs font-bold text-slate-600">이메일</span>
+                        <i class="fa-solid fa-envelope text-[#F15A24] text-xl group-hover:scale-110 transition-transform doro-icon"></i>
+                        <span class="text-xs font-bold text-slate-600" data-ko="이메일" data-en="Email">이메일</span>
                     </a>
                 </div>
             </div>
 
             <!-- Canada Info Badge Section -->
-            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-10">
-                <div class="canada-badge">R&D CENTER CANADA</div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-10 transition-all" id="canada-box">
+                <div class="canada-badge px-2 py-1 bg-red-50 text-red-600 rounded text-[10px] font-black mb-2 inline-block">R&D CENTER CANADA</div>
                 <p class="text-sm font-bold text-slate-700 mb-1">Μ. +1-778-834-3914</p>
                 <p class="text-xs text-slate-400 leading-relaxed">2625 Harrier Dr, Coquitlam, BC, Canada</p>
             </div>
 
             <!-- Website Link -->
             <div class="mb-10 text-center">
-                <a href="http://www.megamedical.co.kr" target="_blank" class="text-sm font-bold text-orange-500 border-b-2 border-orange-100 pb-1 hover:border-orange-500 transition-all">
+                <a href="http://www.megamedical.co.kr" target="_blank" class="text-sm font-bold text-orange-500 border-b-2 border-orange-100 pb-1 hover:border-orange-500 transition-all site-link">
                     www.megamedical.co.kr <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
                 </a>
             </div>
@@ -208,17 +308,17 @@
             <!-- HQ Info -->
             <div class="space-y-5">
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100">
+                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100 info-icon-box">
                         <i class="fa-solid fa-location-dot text-orange-500 text-sm"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest">Headquarter (HQ)</p>
-                        <p class="text-sm text-slate-700 font-medium">강원특별자치도 원주시 동화공단로 110-1</p>
+                        <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest" data-ko="본사" data-en="Headquarter (HQ)">Headquarter (HQ)</p>
+                        <p class="text-sm text-slate-700 font-medium" data-ko="강원특별자치도 원주시 동화공단로 110-1" data-en="110-1, Donghwagongdan-ro, Wonju-si, Korea">강원특별자치도 원주시 동화공단로 110-1</p>
                     </div>
                 </div>
 
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100">
+                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100 info-icon-box">
                         <i class="fa-solid fa-tty text-slate-400 text-sm"></i>
                     </div>
                     <div>
@@ -238,6 +338,55 @@
     <div id="toast">연락처를 저장할 수 있습니다.</div>
 
     <script>
+        let currentLang = 'ko';
+        let isDoroMode = false;
+
+        function setLang(lang) {
+            currentLang = lang;
+            
+            // Toggle Button UI
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+
+            // Switch Text Content
+            document.querySelectorAll('[data-ko]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${lang}`);
+            });
+
+            // Adjust sub-name visibility
+            const subName = document.getElementById('sub-name');
+            subName.style.display = (lang === 'ko') ? 'inline' : 'none';
+        }
+
+        function toggleDoro() {
+            isDoroMode = !isDoroMode;
+            const body = document.body;
+            const doroBtn = document.getElementById('doro-btn');
+            const accentBar = document.getElementById('accent-bar');
+            const icons = document.querySelectorAll('.doro-icon');
+            const infoBoxes = document.querySelectorAll('.info-icon-box i');
+            const siteLink = document.querySelector('.site-link');
+
+            if (isDoroMode) {
+                body.classList.add('doro-mode');
+                doroBtn.classList.add('active');
+                doroBtn.innerText = "🌸";
+                accentBar.style.backgroundColor = 'var(--doro-pink)';
+                icons.forEach(i => i.style.color = 'var(--doro-pink)');
+                infoBoxes.forEach(i => i.style.color = 'var(--doro-pink)');
+                siteLink.style.color = 'var(--doro-pink)';
+                showToast("도로롱 모드가 활성화되었습니다! ✨");
+            } else {
+                body.classList.remove('doro-mode');
+                doroBtn.classList.remove('active');
+                doroBtn.innerText = "DORO";
+                accentBar.style.backgroundColor = 'var(--brand-orange)';
+                icons.forEach(i => i.style.color = 'var(--brand-orange)');
+                infoBoxes.forEach(i => i.style.color = 'var(--brand-orange)');
+                siteLink.style.color = 'var(--brand-orange)';
+            }
+        }
+
         function downloadVCard() {
             const vCardData = [
                 "BEGIN:VCARD", "VERSION:3.0",
@@ -259,10 +408,12 @@
             a.href = url; a.download = '지사장_김화찬_메가메디칼.vcf';
             document.body.appendChild(a); a.click();
             document.body.removeChild(a);
-            showToast();
+            showToast(currentLang === 'ko' ? "연락처를 저장했습니다." : "Contact saved.");
         }
-        function showToast() {
+
+        function showToast(msg) {
             const toast = document.getElementById("toast");
+            toast.textContent = msg || (currentLang === 'ko' ? "연락처를 저장할 수 있습니다." : "You can save the contact.");
             toast.className = "show";
             setTimeout(() => { toast.className = ""; }, 3000);
         }
