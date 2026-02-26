@@ -37,7 +37,7 @@
             transition: background-color 0.5s ease;
         }
 
-        /* 테마별 배경색 */
+        /* 테마 모드 */
         body.doro-mode { background-color: #FFF0F5; }
         body.hood-mode { background-color: #1a1a1a; }
 
@@ -114,37 +114,35 @@
         .doro-mode .soft-item { background: #FFF0F5; border-color: #FFD1DC; }
         .hood-mode .soft-item { background: #2a2a2a; border-color: #444; }
 
-        .floating-controls { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 100; }
-        .lang-switch { background: white; padding: 4px; border-radius: 50px; display: flex; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .lang-btn { padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
-        .lang-btn.active { background: var(--brand-orange); color: white; }
-        .hood-mode .lang-btn.active { background: var(--hood-red); }
-
-        /* 이스터에그 이미지 스타일 */
+        /* 캐릭터 이스터에그 애니메이션 */
         #easter-egg-container {
             position: fixed;
             bottom: -150px;
             right: 20px;
-            width: 120px;
-            height: 120px;
-            z-index: 50;
+            width: 100px;
+            height: 100px;
+            z-index: 100;
             transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             pointer-events: none;
         }
         #easter-egg-container.show { bottom: 20px; }
         #easter-egg-container img { width: 100%; height: 100%; object-fit: contain; }
 
-        /* 하단 숨겨진 트리거 */
-        .hidden-trigger {
+        /* 하단 숨겨진 트리거 구역 */
+        .hidden-triggers {
             margin-top: 2rem;
-            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
             opacity: 0.1;
-            cursor: pointer;
-            font-size: 8px;
-            text-align: center;
-            transition: opacity 0.3s;
         }
-        .hidden-trigger:hover { opacity: 0.5; }
+        .trigger-dot {
+            width: 12px;
+            height: 12px;
+            background: #aaa;
+            border-radius: 50%;
+            cursor: pointer;
+        }
 
         #toast {
             visibility: hidden;
@@ -158,6 +156,7 @@
             left: 50%;
             bottom: 30px;
             transform: translateX(-50%);
+            font-size: 14px;
         }
         #toast.show { visibility: visible; animation: fadein 0.4s, fadeout 0.4s 2.6s; }
 
@@ -167,16 +166,8 @@
 </head>
 <body onclick="hideEasterEgg()">
 
-    <div class="floating-controls">
-        <div class="lang-switch">
-            <div id="btn-ko" class="lang-btn active" onclick="setLang('ko')">KO</div>
-            <div id="btn-en" class="lang-btn" onclick="setLang('en')">EN</div>
-        </div>
-    </div>
-
-    <!-- 이스터에그 이미지 바구니 -->
     <div id="easter-egg-container">
-        <img id="egg-img" src="" alt="Easter Egg">
+        <img id="egg-img" src="" alt="Easter Egg" onerror="this.parentElement.classList.remove('show');">
     </div>
 
     <div class="card-container mx-4" onclick="event.stopPropagation()">
@@ -193,12 +184,10 @@
         <div class="content">
             <div class="mb-10">
                 <h1 class="text-3xl font-extrabold flex items-baseline gap-2">
-                    <span data-ko="김화찬" data-en="Andrew Kim">김화찬</span>
-                    <span class="text-lg font-normal text-slate-400" id="sub-name">Andrew Kim</span>
+                    <span data-ko="김화찬">김화찬</span>
+                    <span class="text-lg font-normal text-slate-400">Andrew Kim</span>
                 </h1>
-                <p class="text-sm font-bold text-orange-600 mt-1 theme-text" 
-                   data-ko="기술연구소 기획인증팀 | 지사장" 
-                   data-en="R&D Planning & Certification Team | Branch Manager">
+                <p class="text-sm font-bold text-orange-600 mt-1 theme-text">
                     기술연구소 기획인증팀 | 지사장
                 </p>
                 <div class="h-1.5 w-12 bg-[#F15A24] mt-4 rounded-full theme-bar" id="accent-bar"></div>
@@ -207,48 +196,33 @@
             <div class="space-y-4 mb-10">
                 <button onclick="downloadVCard()" class="w-full brand-btn py-4.5 rounded-2xl font-bold flex items-center justify-center gap-3 text-lg h-14">
                     <i class="fa-solid fa-address-book"></i> 
-                    <span data-ko="연락처 저장하기" data-en="Save Contact">연락처 저장하기</span>
+                    <span>연락처 저장하기</span>
                 </button>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <a href="tel:01068075802" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
                         <i class="fa-solid fa-phone text-[#F15A24] text-xl group-hover:scale-110 transition-transform theme-icon"></i>
-                        <span class="text-xs font-bold opacity-70" data-ko="휴대폰 (KR)" data-en="Mobile (KR)">휴대폰 (KR)</span>
+                        <span class="text-xs font-bold opacity-70">휴대폰 (KR)</span>
                     </a>
                     <a href="mailto:hckim@megamedical.co.kr" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
                         <i class="fa-solid fa-envelope text-[#F15A24] text-xl group-hover:scale-110 transition-transform theme-icon"></i>
-                        <span class="text-xs font-bold opacity-70" data-ko="이메일" data-en="Email">이메일</span>
+                        <span class="text-xs font-bold opacity-70">이메일</span>
                     </a>
                 </div>
             </div>
 
-            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-10 transition-all dark-item" id="canada-box">
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-8 transition-all" id="canada-box">
                 <div class="px-2 py-1 bg-red-50 text-red-600 rounded text-[10px] font-black mb-2 inline-block">R&D CENTER CANADA</div>
-                <p class="text-sm font-bold mb-1 theme-subtext">Μ. +1-778-834-3914</p>
+                <p class="text-sm font-bold mb-1">Μ. +1-778-834-3914</p>
                 <p class="text-xs text-slate-400 leading-relaxed">2625 Harrier Dr, Coquitlam, BC, Canada</p>
             </div>
 
-            <div class="mb-10 text-center">
-                <a href="http://www.megamedical.co.kr" target="_blank" class="text-sm font-bold text-orange-500 border-b-2 border-orange-100 pb-1 hover:border-orange-500 transition-all site-link theme-text">
-                    www.megamedical.co.kr <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
-                </a>
+            <!-- 숨겨진 트리거 도트 (이스터에그) -->
+            <div class="hidden-triggers">
+                <div class="trigger-dot" onclick="triggerEasterEgg('doro')"></div>
+                <div class="trigger-dot" onclick="triggerEasterEgg('hood')"></div>
+                <div class="trigger-dot" onclick="resetTheme()"></div>
             </div>
-
-            <div class="space-y-5">
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100 dark-item">
-                        <i class="fa-solid fa-location-dot text-orange-500 text-sm theme-icon"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest theme-text" data-ko="본사" data-en="Headquarter (HQ)">Headquarter (HQ)</p>
-                        <p class="text-sm font-medium opacity-80" data-ko="강원특별자치도 원주시 동화공단로 110-1" data-en="110-1, Donghwagongdan-ro, Wonju-si, Korea">강원특별자치도 원주시 동화공단로 110-1</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 숨겨진 이스터에그 트리거 구역 -->
-            <div class="hidden-trigger" onclick="triggerEasterEgg('doro')">. . . . . . . . . . . . . . . . . . . . . .</div>
-            <div class="hidden-trigger" onclick="triggerEasterEgg('hood')">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</div>
 
             <div class="mt-8 text-center">
                 <p class="text-[10px] text-slate-300 tracking-[0.2em] uppercase font-bold">We Do Your ENT / Mega Medical</p>
@@ -256,38 +230,25 @@
         </div>
     </div>
 
-    <div id="toast">연락처를 저장할 수 있습니다.</div>
+    <div id="toast"></div>
 
     <script>
-        let currentLang = 'ko';
+        // 깃허브 원본 파일 주소 (유저 이름과 레포지토리 이름 확인 필요)
+        const GITHUB_USER = "hajwmg";
+        const GITHUB_REPO = "hajwmg.github.io";
+        const GITHUB_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/`;
         
-        // 이미지 깨짐 방지용 데이터 (사용자가 올린 이미지들)
         const IMAGES = {
-            doro: "https://i.ibb.co/p6VpT6z/doro.png",
-            hood: "https://i.ibb.co/6P0wWTP/redhood.png" // 레드후드 대체 이미지 (검증된 경로 권장)
+            doro: GITHUB_BASE + "image_e97725.png.jfif", // 깃허브에 올린 파일명 그대로 사용
+            hood: GITHUB_BASE + "REDHOOD.jfif"
         };
-
-        function setLang(lang) {
-            currentLang = lang;
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`btn-${lang}`).classList.add('active');
-            document.querySelectorAll('[data-ko]').forEach(el => {
-                el.textContent = el.getAttribute(`data-${lang}`);
-            });
-            const subName = document.getElementById('sub-name');
-            subName.style.display = (lang === 'ko') ? 'inline' : 'none';
-        }
 
         function triggerEasterEgg(type) {
             event.stopPropagation();
             const body = document.body;
             const eggContainer = document.getElementById('easter-egg-container');
             const eggImg = document.getElementById('egg-img');
-            const accentBar = document.getElementById('accent-bar');
-            const themeIcons = document.querySelectorAll('.theme-icon');
-            const themeTexts = document.querySelectorAll('.theme-text');
 
-            // 초기화
             body.classList.remove('doro-mode', 'hood-mode');
             
             if (type === 'doro') {
@@ -295,15 +256,22 @@
                 eggImg.src = IMAGES.doro;
                 updateThemeColors('var(--doro-pink)');
                 showToast("DORO MODE ACTIVATED! 🌸");
-            } else {
+            } else if (type === 'hood') {
                 body.classList.add('hood-mode');
-                // 레드후드 이미지 (올려주신 레후.jfif 등 기반 경로 설정 가능)
-                eggImg.src = "https://i.ibb.co/q9Mv2rD/redhood.png"; 
+                eggImg.src = IMAGES.hood;
                 updateThemeColors('var(--hood-red)');
                 showToast("RED HOOD MODE ACTIVATED! 🔥");
             }
 
             eggContainer.classList.add('show');
+        }
+
+        function resetTheme() {
+            event.stopPropagation();
+            document.body.classList.remove('doro-mode', 'hood-mode');
+            updateThemeColors('var(--brand-orange)');
+            document.getElementById('easter-egg-container').classList.remove('show');
+            showToast("Theme Reset.");
         }
 
         function updateThemeColors(color) {
@@ -316,35 +284,28 @@
             document.getElementById('easter-egg-container').classList.remove('show');
         }
 
-        function downloadVCard() {
-            const vCardData = [
-                "BEGIN:VCARD", "VERSION:3.0",
-                "N;CHARSET=UTF-8:김;화찬;;;",
-                "FN;CHARSET=UTF-8:김화찬 (Andrew Kim)",
-                "ORG;CHARSET=UTF-8:(주)메가메디칼 기술연구소",
-                "TITLE;CHARSET=UTF-8:지사장 / Branch Manager",
-                "TEL;TYPE=CELL:010-6807-5802",
-                "TEL;TYPE=WORK:070-5130-7801",
-                "EMAIL:hckim@megamedical.co.kr",
-                "ADR;TYPE=WORK;CHARSET=UTF-8:;;110-1, Donghwagongdan-ro, Munmak-eup;Wonju-si;Gangwon-do;26365;Korea",
-                "URL:http://www.megamedical.co.kr",
-                "END:VCARD"
-            ].join("\r\n");
-
-            const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = '지사장_김화찬_메가메디칼.vcf';
-            document.body.appendChild(a); a.click();
-            document.body.removeChild(a);
-            showToast(currentLang === 'ko' ? "연락처를 저장했습니다." : "Contact saved.");
-        }
-
         function showToast(msg) {
             const toast = document.getElementById("toast");
             toast.textContent = msg;
             toast.className = "show";
             setTimeout(() => { toast.className = ""; }, 3000);
+        }
+
+        function downloadVCard() {
+            const vCardData = [
+                "BEGIN:VCARD", "VERSION:3.0",
+                "N;CHARSET=UTF-8:김;화찬;;;",
+                "FN;CHARSET=UTF-8:김화찬 (Andrew Kim)",
+                "ORG;CHARSET=UTF-8:(주)메가메디칼",
+                "TEL;TYPE=CELL:010-6807-5802",
+                "EMAIL:hckim@megamedical.co.kr",
+                "END:VCARD"
+            ].join("\r\n");
+            const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'Andrew_Kim_MegaMedical.vcf';
+            a.click();
         }
     </script>
 </body>
