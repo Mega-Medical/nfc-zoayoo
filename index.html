@@ -80,8 +80,8 @@
             position: absolute;
             bottom: -45px;
             left: 24px;
-            width: 90px;
-            height: 90px;
+            width: 95px;
+            height: 95px;
             background: white;
             border-radius: 50%;
             display: flex;
@@ -96,6 +96,8 @@
         .doro-mode .avatar-circle { border-color: var(--doro-pink); }
         .hood-mode .avatar-circle { border-color: var(--hood-red); background: #333; }
 
+        /* 프로필 이미지/이니셜 */
+        #profile-img { width: 100%; height: 100%; object-fit: cover; display: none; }
         .avatar-initial { font-size: 2.2rem; font-weight: 800; color: var(--brand-orange); transition: color 0.5s; }
         .hood-mode .avatar-initial { color: var(--hood-red); }
 
@@ -114,6 +116,29 @@
         .doro-mode .soft-item { background: #FFF0F5; border-color: #FFD1DC; }
         .hood-mode .soft-item { background: #2a2a2a; border-color: #444; }
 
+        /* 언어 스위치 */
+        .lang-switch {
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            background: rgba(0,0,0,0.05);
+            padding: 4px;
+            border-radius: 50px;
+            display: flex;
+            gap: 4px;
+            z-index: 50;
+        }
+        .lang-btn {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .lang-btn.active { background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .hood-mode .lang-btn.active { background: var(--hood-red); color: white; }
+
         /* 캐릭터 이스터에그 애니메이션 */
         #easter-egg-container {
             position: fixed;
@@ -128,18 +153,18 @@
         #easter-egg-container.show { bottom: 20px; }
         #easter-egg-container img { width: 100%; height: 100%; object-fit: contain; }
 
-        /* 하단 숨겨진 트리거 구역 */
+        /* 하단 숨겨진 트리거 구역 (더 작고 투명하게) */
         .hidden-triggers {
             margin-top: 2rem;
             display: flex;
             justify-content: center;
-            gap: 25px;
-            opacity: 0.1;
+            gap: 30px;
+            opacity: 0.02; /* 거의 보이지 않음 */
         }
         .trigger-dot {
-            width: 12px;
-            height: 12px;
-            background: #aaa;
+            width: 6px;
+            height: 6px;
+            background: #000;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -150,13 +175,13 @@
             color: white;
             text-align: center;
             border-radius: 50px;
-            padding: 12px 24px;
+            padding: 10px 20px;
             position: fixed;
             z-index: 1000;
             left: 50%;
             bottom: 30px;
             transform: translateX(-50%);
-            font-size: 14px;
+            font-size: 13px;
         }
         #toast.show { visibility: visible; animation: fadein 0.4s, fadeout 0.4s 2.6s; }
 
@@ -167,27 +192,34 @@
 <body onclick="hideEasterEgg()">
 
     <div id="easter-egg-container">
-        <img id="egg-img" src="" alt="Easter Egg" onerror="this.parentElement.classList.remove('show');">
+        <img id="egg-img" src="" alt="Easter Egg">
     </div>
 
     <div class="card-container mx-4" onclick="event.stopPropagation()">
+        <!-- 언어 선택 버튼 추가 -->
+        <div class="lang-switch">
+            <div id="btn-ko" class="lang-btn active" onclick="setLang('ko')">KR</div>
+            <div id="btn-en" class="lang-btn" onclick="setLang('en')">EN</div>
+        </div>
+
         <div class="profile-header">
             <div class="logo-box">
                 <span class="logo-top">mega</span>
                 <span class="logo-bottom">MEDICAL</span>
             </div>
             <div class="avatar-circle">
-                <span class="avatar-initial">AK</span>
+                <img id="profile-img" src="" alt="Profile">
+                <span id="profile-initial" class="avatar-initial">AK</span>
             </div>
         </div>
 
         <div class="content">
             <div class="mb-10">
-                <h1 class="text-3xl font-extrabold flex items-baseline gap-2">
-                    <span data-ko="김화찬">김화찬</span>
-                    <span class="text-lg font-normal text-slate-400">Andrew Kim</span>
+                <h1 class="text-3xl font-extrabold flex flex-wrap items-baseline gap-2">
+                    <span id="name-main">김화찬</span>
+                    <span id="name-sub" class="text-lg font-normal text-slate-400">Andrew Kim</span>
                 </h1>
-                <p class="text-sm font-bold text-orange-600 mt-1 theme-text">
+                <p id="job-title" class="text-sm font-bold text-orange-600 mt-1 theme-text">
                     기술연구소 기획인증팀 | 지사장
                 </p>
                 <div class="h-1.5 w-12 bg-[#F15A24] mt-4 rounded-full theme-bar" id="accent-bar"></div>
@@ -196,28 +228,28 @@
             <div class="space-y-4 mb-10">
                 <button onclick="downloadVCard()" class="w-full brand-btn py-4.5 rounded-2xl font-bold flex items-center justify-center gap-3 text-lg h-14">
                     <i class="fa-solid fa-address-book"></i> 
-                    <span>연락처 저장하기</span>
+                    <span id="btn-text">연락처 저장하기</span>
                 </button>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <a href="tel:01068075802" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
                         <i class="fa-solid fa-phone text-[#F15A24] text-xl group-hover:scale-110 transition-transform theme-icon"></i>
-                        <span class="text-xs font-bold opacity-70">휴대폰 (KR)</span>
+                        <span id="label-mobile" class="text-xs font-bold opacity-70">휴대폰 (KR)</span>
                     </a>
                     <a href="mailto:hckim@megamedical.co.kr" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
                         <i class="fa-solid fa-envelope text-[#F15A24] text-xl group-hover:scale-110 transition-transform theme-icon"></i>
-                        <span class="text-xs font-bold opacity-70">이메일</span>
+                        <span id="label-email" class="text-xs font-bold opacity-70">이메일</span>
                     </a>
                 </div>
             </div>
 
             <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-8 transition-all" id="canada-box">
                 <div class="px-2 py-1 bg-red-50 text-red-600 rounded text-[10px] font-black mb-2 inline-block">R&D CENTER CANADA</div>
-                <p class="text-sm font-bold mb-1">Μ. +1-778-834-3914</p>
+                <p class="text-sm font-bold mb-1 theme-subtext">Μ. +1-778-834-3914</p>
                 <p class="text-xs text-slate-400 leading-relaxed">2625 Harrier Dr, Coquitlam, BC, Canada</p>
             </div>
 
-            <!-- 숨겨진 트리거 도트 (이스터에그) -->
+            <!-- 숨겨진 트리거 도트 (이스터에그 - 정말 작게 숨김) -->
             <div class="hidden-triggers">
                 <div class="trigger-dot" onclick="triggerEasterEgg('doro')"></div>
                 <div class="trigger-dot" onclick="triggerEasterEgg('hood')"></div>
@@ -233,32 +265,76 @@
     <div id="toast"></div>
 
     <script>
-        // 깃허브 원본 파일 주소 (유저 이름과 레포지토리 이름 확인 필요)
-        const GITHUB_USER = "hajwmg";
-        const GITHUB_REPO = "hajwmg.github.io";
-        const GITHUB_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/`;
+        let currentLang = 'ko';
         
+        // 깃허브 원본 파일 주소
+        const GITHUB_BASE = "https://raw.githubusercontent.com/hajwmg/hajwmg.github.io/main/";
         const IMAGES = {
-            doro: GITHUB_BASE + "image_e97725.png.jfif", // 깃허브에 올린 파일명 그대로 사용
+            doro: GITHUB_BASE + "image_e97725.png.jfif", 
             hood: GITHUB_BASE + "REDHOOD.jfif"
         };
+
+        // 언어 데이터
+        const TRANSLATIONS = {
+            ko: {
+                nameMain: "김화찬",
+                nameSub: "Andrew Kim",
+                job: "기술연구소 기획인증팀 | 지사장",
+                btn: "연락처 저장하기",
+                mobile: "휴대폰 (KR)",
+                email: "이메일",
+                toast: "연락처를 저장할 수 있습니다.",
+                reset: "테마 초기화."
+            },
+            en: {
+                nameMain: "Andrew Kim",
+                nameSub: "",
+                job: "R&D Planning & Certification | Branch Manager",
+                btn: "Save Contact",
+                mobile: "Mobile (KR)",
+                email: "Email",
+                toast: "Saving contact file...",
+                reset: "Theme Reset."
+            }
+        };
+
+        function setLang(lang) {
+            event.stopPropagation();
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+
+            const t = TRANSLATIONS[lang];
+            document.getElementById('name-main').textContent = t.nameMain;
+            document.getElementById('name-sub').textContent = t.nameSub;
+            document.getElementById('job-title').textContent = t.job;
+            document.getElementById('btn-text').textContent = t.btn;
+            document.getElementById('label-mobile').textContent = t.mobile;
+            document.getElementById('label-email').textContent = t.email;
+        }
 
         function triggerEasterEgg(type) {
             event.stopPropagation();
             const body = document.body;
             const eggContainer = document.getElementById('easter-egg-container');
             const eggImg = document.getElementById('egg-img');
+            const profileImg = document.getElementById('profile-img');
+            const profileInitial = document.getElementById('profile-initial');
 
             body.classList.remove('doro-mode', 'hood-mode');
+            profileImg.style.display = 'block';
+            profileInitial.style.display = 'none';
             
             if (type === 'doro') {
                 body.classList.add('doro-mode');
                 eggImg.src = IMAGES.doro;
+                profileImg.src = IMAGES.doro;
                 updateThemeColors('var(--doro-pink)');
                 showToast("DORO MODE ACTIVATED! 🌸");
             } else if (type === 'hood') {
                 body.classList.add('hood-mode');
                 eggImg.src = IMAGES.hood;
+                profileImg.src = IMAGES.hood;
                 updateThemeColors('var(--hood-red)');
                 showToast("RED HOOD MODE ACTIVATED! 🔥");
             }
@@ -269,9 +345,15 @@
         function resetTheme() {
             event.stopPropagation();
             document.body.classList.remove('doro-mode', 'hood-mode');
+            
+            const profileImg = document.getElementById('profile-img');
+            const profileInitial = document.getElementById('profile-initial');
+            profileImg.style.display = 'none';
+            profileInitial.style.display = 'block';
+            
             updateThemeColors('var(--brand-orange)');
             document.getElementById('easter-egg-container').classList.remove('show');
-            showToast("Theme Reset.");
+            showToast(TRANSLATIONS[currentLang].reset);
         }
 
         function updateThemeColors(color) {
@@ -306,6 +388,7 @@
             const a = document.createElement('a');
             a.href = url; a.download = 'Andrew_Kim_MegaMedical.vcf';
             a.click();
+            showToast(TRANSLATIONS[currentLang].toast);
         }
     </script>
 </body>
