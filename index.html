@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="메가메디칼 김화찬 지사장">
     <meta property="og:description" content="기술연구소 기획인증팀, 김화찬입니다.">
     <meta property="og:image" content="https://www.megamedical.co.kr/img/common/logo.png">
-    <meta property="og:url" content="https://hajwmg.github.io/andrew_kim.html">
 
     <title>Mega Medical - Andrew Kim</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,6 +21,7 @@
             --brand-blue: #004C97;
             --text-main: #333333;
             --doro-pink: #FFB7C5;
+            --hood-red: #C52127;
         }
 
         body {
@@ -36,9 +37,9 @@
             transition: background-color 0.5s ease;
         }
 
-        body.doro-mode {
-            background-color: #FFF0F5;
-        }
+        /* 테마별 배경색 */
+        body.doro-mode { background-color: #FFF0F5; }
+        body.hood-mode { background-color: #1a1a1a; }
 
         .card-container {
             width: 100%;
@@ -53,10 +54,8 @@
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .doro-mode .card-container {
-            border-color: var(--doro-pink);
-            box-shadow: 0 20px 40px rgba(255, 183, 197, 0.4);
-        }
+        .doro-mode .card-container { border-color: var(--doro-pink); box-shadow: 0 20px 40px rgba(255, 183, 197, 0.4); }
+        .hood-mode .card-container { background-color: #242424; border-color: var(--hood-red); box-shadow: 0 20px 40px rgba(197, 33, 39, 0.3); color: white; }
 
         .profile-header {
             background-color: #ffffff;
@@ -64,33 +63,18 @@
             text-align: right;
             position: relative;
             border-bottom: 8px solid var(--brand-orange);
-            transition: border-color 0.5s ease;
+            transition: all 0.5s ease;
         }
 
-        .doro-mode .profile-header {
-            border-bottom-color: var(--doro-pink);
-        }
+        .doro-mode .profile-header { border-bottom-color: var(--doro-pink); }
+        .hood-mode .profile-header { background-color: #242424; border-bottom-color: var(--hood-red); }
 
-        .logo-box {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
+        .logo-box { display: flex; flex-direction: column; align-items: flex-end; }
+        .logo-top { color: var(--brand-orange); font-weight: 900; font-size: 1.8rem; line-height: 1; transition: color 0.5s; }
+        .logo-bottom { color: var(--brand-blue); font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; margin-top: 2px; transition: color 0.5s; }
 
-        .logo-top {
-            color: var(--brand-orange);
-            font-weight: 900;
-            font-size: 1.8rem;
-            line-height: 1;
-        }
-
-        .logo-bottom {
-            color: var(--brand-blue);
-            font-weight: 700;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            margin-top: 2px;
-        }
+        .hood-mode .logo-top { color: var(--hood-red); }
+        .hood-mode .logo-bottom { color: #555; }
 
         .avatar-circle {
             position: absolute;
@@ -103,33 +87,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 10px 25px rgba(241, 90, 36, 0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             border: 3px solid var(--brand-orange);
             overflow: hidden;
             transition: all 0.5s ease;
         }
 
-        .doro-mode .avatar-circle {
-            border-color: var(--doro-pink);
-            box-shadow: 0 10px 25px rgba(255, 183, 197, 0.5);
-        }
+        .doro-mode .avatar-circle { border-color: var(--doro-pink); }
+        .hood-mode .avatar-circle { border-color: var(--hood-red); background: #333; }
 
-        .avatar-initial {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--brand-orange);
-        }
-
-        .doro-img {
-            display: none;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 8px; /* 캐릭터가 원에 꽉 차지 않게 여백 추가 */
-        }
-
-        .doro-mode .avatar-initial { display: none; }
-        .doro-mode .doro-img { display: block; }
+        .avatar-initial { font-size: 2.2rem; font-weight: 800; color: var(--brand-orange); transition: color 0.5s; }
+        .hood-mode .avatar-initial { color: var(--hood-red); }
 
         .content { padding: 65px 24px 35px; }
 
@@ -140,73 +108,43 @@
             transition: all 0.2s;
         }
         .doro-mode .brand-btn { background-color: var(--doro-pink); box-shadow: 0 6px 15px rgba(255, 183, 197, 0.5); }
+        .hood-mode .brand-btn { background-color: var(--hood-red); box-shadow: 0 6px 15px rgba(197, 33, 39, 0.5); }
 
-        .soft-item {
-            background: #FFF9F7;
-            border: 1px solid #FFEBE5;
-            transition: all 0.2s;
-        }
+        .soft-item { background: #FFF9F7; border: 1px solid #FFEBE5; transition: all 0.2s; }
         .doro-mode .soft-item { background: #FFF0F5; border-color: #FFD1DC; }
+        .hood-mode .soft-item { background: #2a2a2a; border-color: #444; }
 
-        .floating-controls {
+        .floating-controls { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 100; }
+        .lang-switch { background: white; padding: 4px; border-radius: 50px; display: flex; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .lang-btn { padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .lang-btn.active { background: var(--brand-orange); color: white; }
+        .hood-mode .lang-btn.active { background: var(--hood-red); }
+
+        /* 이스터에그 이미지 스타일 */
+        #easter-egg-container {
             position: fixed;
-            top: 20px;
+            bottom: -150px;
             right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 100;
+            width: 120px;
+            height: 120px;
+            z-index: 50;
+            transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: none;
         }
+        #easter-egg-container.show { bottom: 20px; }
+        #easter-egg-container img { width: 100%; height: 100%; object-fit: contain; }
 
-        .lang-switch {
-            background: white;
-            padding: 4px;
-            border-radius: 50px;
-            display: flex;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .lang-btn {
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 700;
+        /* 하단 숨겨진 트리거 */
+        .hidden-trigger {
+            margin-top: 2rem;
+            padding: 10px;
+            opacity: 0.1;
             cursor: pointer;
-            transition: all 0.3s;
+            font-size: 8px;
+            text-align: center;
+            transition: opacity 0.3s;
         }
-
-        .lang-btn.active {
-            background: var(--brand-orange);
-            color: white;
-        }
-
-        .doro-trigger {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 900;
-            color: #ccc;
-            border: 2px solid transparent;
-        }
-
-        .doro-trigger:hover { transform: scale(1.1); }
-        .doro-trigger.active {
-            border-color: var(--doro-pink);
-            color: var(--doro-pink);
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
+        .hidden-trigger:hover { opacity: 0.5; }
 
         #toast {
             visibility: hidden;
@@ -227,19 +165,21 @@
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
-<body>
+<body onclick="hideEasterEgg()">
 
     <div class="floating-controls">
         <div class="lang-switch">
             <div id="btn-ko" class="lang-btn active" onclick="setLang('ko')">KO</div>
             <div id="btn-en" class="lang-btn" onclick="setLang('en')">EN</div>
         </div>
-        <div id="doro-btn" class="doro-trigger" onclick="toggleDoro()" title="DORO Mode">
-            DORO
-        </div>
     </div>
 
-    <div class="card-container mx-4">
+    <!-- 이스터에그 이미지 바구니 -->
+    <div id="easter-egg-container">
+        <img id="egg-img" src="" alt="Easter Egg">
+    </div>
+
+    <div class="card-container mx-4" onclick="event.stopPropagation()">
         <div class="profile-header">
             <div class="logo-box">
                 <span class="logo-top">mega</span>
@@ -247,25 +187,21 @@
             </div>
             <div class="avatar-circle">
                 <span class="avatar-initial">AK</span>
-                <!-- 업로드해주신 이미지 데이터를 직접 삽입하여 깨짐 방지 -->
-                <img src="https://i.ibb.co/p6VpT6z/doro.png" 
-                     onerror="this.src='https://raw.githubusercontent.com/hajwmg/hajwmg.github.io/main/image_e97725.png'" 
-                     alt="Doro" class="doro-img">
             </div>
         </div>
 
         <div class="content">
             <div class="mb-10">
-                <h1 class="text-3xl font-extrabold text-slate-800 flex items-baseline gap-2">
+                <h1 class="text-3xl font-extrabold flex items-baseline gap-2">
                     <span data-ko="김화찬" data-en="Andrew Kim">김화찬</span>
                     <span class="text-lg font-normal text-slate-400" id="sub-name">Andrew Kim</span>
                 </h1>
-                <p class="text-sm font-bold text-orange-600 mt-1" 
+                <p class="text-sm font-bold text-orange-600 mt-1 theme-text" 
                    data-ko="기술연구소 기획인증팀 | 지사장" 
                    data-en="R&D Planning & Certification Team | Branch Manager">
                     기술연구소 기획인증팀 | 지사장
                 </p>
-                <div class="h-1.5 w-12 bg-[#F15A24] mt-4 rounded-full" id="accent-bar"></div>
+                <div class="h-1.5 w-12 bg-[#F15A24] mt-4 rounded-full theme-bar" id="accent-bar"></div>
             </div>
 
             <div class="space-y-4 mb-10">
@@ -276,51 +212,45 @@
                 
                 <div class="grid grid-cols-2 gap-3">
                     <a href="tel:01068075802" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
-                        <i class="fa-solid fa-phone text-[#F15A24] text-xl group-hover:scale-110 transition-transform doro-icon"></i>
-                        <span class="text-xs font-bold text-slate-600" data-ko="휴대폰 (KR)" data-en="Mobile (KR)">휴대폰 (KR)</span>
+                        <i class="fa-solid fa-phone text-[#F15A24] text-xl group-hover:scale-110 transition-transform theme-icon"></i>
+                        <span class="text-xs font-bold opacity-70" data-ko="휴대폰 (KR)" data-en="Mobile (KR)">휴대폰 (KR)</span>
                     </a>
                     <a href="mailto:hckim@megamedical.co.kr" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
-                        <i class="fa-solid fa-envelope text-[#F15A24] text-xl group-hover:scale-110 transition-transform doro-icon"></i>
-                        <span class="text-xs font-bold text-slate-600" data-ko="이메일" data-en="Email">이메일</span>
+                        <i class="fa-solid fa-envelope text-[#F15A24] text-xl group-hover:scale-110 transition-transform theme-icon"></i>
+                        <span class="text-xs font-bold opacity-70" data-ko="이메일" data-en="Email">이메일</span>
                     </a>
                 </div>
             </div>
 
-            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-10 transition-all" id="canada-box">
-                <div class="canada-badge px-2 py-1 bg-red-50 text-red-600 rounded text-[10px] font-black mb-2 inline-block">R&D CENTER CANADA</div>
-                <p class="text-sm font-bold text-slate-700 mb-1">Μ. +1-778-834-3914</p>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-10 transition-all dark-item" id="canada-box">
+                <div class="px-2 py-1 bg-red-50 text-red-600 rounded text-[10px] font-black mb-2 inline-block">R&D CENTER CANADA</div>
+                <p class="text-sm font-bold mb-1 theme-subtext">Μ. +1-778-834-3914</p>
                 <p class="text-xs text-slate-400 leading-relaxed">2625 Harrier Dr, Coquitlam, BC, Canada</p>
             </div>
 
             <div class="mb-10 text-center">
-                <a href="http://www.megamedical.co.kr" target="_blank" class="text-sm font-bold text-orange-500 border-b-2 border-orange-100 pb-1 hover:border-orange-500 transition-all site-link">
+                <a href="http://www.megamedical.co.kr" target="_blank" class="text-sm font-bold text-orange-500 border-b-2 border-orange-100 pb-1 hover:border-orange-500 transition-all site-link theme-text">
                     www.megamedical.co.kr <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
                 </a>
             </div>
 
             <div class="space-y-5">
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100 info-icon-box">
-                        <i class="fa-solid fa-location-dot text-orange-500 text-sm"></i>
+                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100 dark-item">
+                        <i class="fa-solid fa-location-dot text-orange-500 text-sm theme-icon"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest" data-ko="본사" data-en="Headquarter (HQ)">Headquarter (HQ)</p>
-                        <p class="text-sm text-slate-700 font-medium" data-ko="강원특별자치도 원주시 동화공단로 110-1" data-en="110-1, Donghwagongdan-ro, Wonju-si, Korea">강원특별자치도 원주시 동화공단로 110-1</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100 info-icon-box">
-                        <i class="fa-solid fa-tty text-slate-400 text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Office / Fax</p>
-                        <p class="text-sm text-slate-600">T. 070-5130-7801 / F. 033-733-0262</p>
+                        <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest theme-text" data-ko="본사" data-en="Headquarter (HQ)">Headquarter (HQ)</p>
+                        <p class="text-sm font-medium opacity-80" data-ko="강원특별자치도 원주시 동화공단로 110-1" data-en="110-1, Donghwagongdan-ro, Wonju-si, Korea">강원특별자치도 원주시 동화공단로 110-1</p>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-14 text-center">
+            <!-- 숨겨진 이스터에그 트리거 구역 -->
+            <div class="hidden-trigger" onclick="triggerEasterEgg('doro')">. . . . . . . . . . . . . . . . . . . . . .</div>
+            <div class="hidden-trigger" onclick="triggerEasterEgg('hood')">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</div>
+
+            <div class="mt-8 text-center">
                 <p class="text-[10px] text-slate-300 tracking-[0.2em] uppercase font-bold">We Do Your ENT / Mega Medical</p>
             </div>
         </div>
@@ -330,7 +260,12 @@
 
     <script>
         let currentLang = 'ko';
-        let isDoroMode = false;
+        
+        // 이미지 깨짐 방지용 데이터 (사용자가 올린 이미지들)
+        const IMAGES = {
+            doro: "https://i.ibb.co/p6VpT6z/doro.png",
+            hood: "https://i.ibb.co/6P0wWTP/redhood.png" // 레드후드 대체 이미지 (검증된 경로 권장)
+        };
 
         function setLang(lang) {
             currentLang = lang;
@@ -343,33 +278,42 @@
             subName.style.display = (lang === 'ko') ? 'inline' : 'none';
         }
 
-        function toggleDoro() {
-            isDoroMode = !isDoroMode;
+        function triggerEasterEgg(type) {
+            event.stopPropagation();
             const body = document.body;
-            const doroBtn = document.getElementById('doro-btn');
+            const eggContainer = document.getElementById('easter-egg-container');
+            const eggImg = document.getElementById('egg-img');
             const accentBar = document.getElementById('accent-bar');
-            const icons = document.querySelectorAll('.doro-icon');
-            const infoBoxes = document.querySelectorAll('.info-icon-box i');
-            const siteLink = document.querySelector('.site-link');
+            const themeIcons = document.querySelectorAll('.theme-icon');
+            const themeTexts = document.querySelectorAll('.theme-text');
 
-            if (isDoroMode) {
+            // 초기화
+            body.classList.remove('doro-mode', 'hood-mode');
+            
+            if (type === 'doro') {
                 body.classList.add('doro-mode');
-                doroBtn.classList.add('active');
-                doroBtn.innerText = "🌸";
-                accentBar.style.backgroundColor = 'var(--doro-pink)';
-                icons.forEach(i => i.style.color = 'var(--doro-pink)');
-                infoBoxes.forEach(i => i.style.color = 'var(--doro-pink)');
-                siteLink.style.color = 'var(--doro-pink)';
-                showToast("도로롱 모드가 활성화되었습니다! ✨");
+                eggImg.src = IMAGES.doro;
+                updateThemeColors('var(--doro-pink)');
+                showToast("DORO MODE ACTIVATED! 🌸");
             } else {
-                body.classList.remove('doro-mode');
-                doroBtn.classList.remove('active');
-                doroBtn.innerText = "DORO";
-                accentBar.style.backgroundColor = 'var(--brand-orange)';
-                icons.forEach(i => i.style.color = 'var(--brand-orange)');
-                infoBoxes.forEach(i => i.style.color = 'var(--brand-orange)');
-                siteLink.style.color = 'var(--brand-orange)';
+                body.classList.add('hood-mode');
+                // 레드후드 이미지 (올려주신 레후.jfif 등 기반 경로 설정 가능)
+                eggImg.src = "https://i.ibb.co/q9Mv2rD/redhood.png"; 
+                updateThemeColors('var(--hood-red)');
+                showToast("RED HOOD MODE ACTIVATED! 🔥");
             }
+
+            eggContainer.classList.add('show');
+        }
+
+        function updateThemeColors(color) {
+            document.getElementById('accent-bar').style.backgroundColor = color;
+            document.querySelectorAll('.theme-icon').forEach(i => i.style.color = color);
+            document.querySelectorAll('.theme-text').forEach(t => t.style.color = color);
+        }
+
+        function hideEasterEgg() {
+            document.getElementById('easter-egg-container').classList.remove('show');
         }
 
         function downloadVCard() {
@@ -398,7 +342,7 @@
 
         function showToast(msg) {
             const toast = document.getElementById("toast");
-            toast.textContent = msg || (currentLang === 'ko' ? "연락처를 저장할 수 있습니다." : "You can save the contact.");
+            toast.textContent = msg;
             toast.className = "show";
             setTimeout(() => { toast.className = ""; }, 3000);
         }
