@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 카카오톡/SNS 공유 설정 (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="메가메디칼 김화찬 지사장">
+    <meta property="og:description" content="기술연구소 기획인증팀, 김화찬입니다.">
+    <meta property="og:image" content="https://www.megamedical.co.kr/img/common/logo.png">
+    <meta property="og:url" content="https://hajwmg.github.io/andrew_kim.html">
+
+    <title>Mega Medical - Andrew Kim</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --brand-orange: #F15A24;
+            --brand-blue: #004C97;
+            --text-main: #333333;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 2.5rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            border: 1px solid #f0f0f0;
+        }
+
+        .profile-header {
+            background-color: #ffffff;
+            padding: 50px 24px 60px;
+            text-align: right;
+            position: relative;
+            border-bottom: 8px solid var(--brand-orange);
+        }
+
+        .logo-box {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .logo-top {
+            color: var(--brand-orange);
+            font-weight: 900;
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .logo-bottom {
+            color: var(--brand-blue);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        .avatar-circle {
+            position: absolute;
+            bottom: -45px;
+            left: 24px;
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(241, 90, 36, 0.2);
+            border: 3px solid var(--brand-orange);
+        }
+
+        .avatar-initial {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--brand-orange);
+        }
+
+        .content {
+            padding: 65px 24px 35px;
+        }
+
+        .brand-btn {
+            background-color: var(--brand-orange);
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(241, 90, 36, 0.3);
+            transition: all 0.2s;
+        }
+
+        .brand-btn:active { transform: scale(0.97); }
+
+        .soft-item {
+            background: #FFF9F7;
+            border: 1px solid #FFEBE5;
+            transition: all 0.2s;
+        }
+
+        .soft-item:hover { 
+            border-color: var(--brand-orange);
+            background: white;
+        }
+
+        .canada-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #FFEDED;
+            color: #D32F2F;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        #toast {
+            visibility: hidden;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+        }
+
+        #toast.show { visibility: visible; animation: fadein 0.4s, fadeout 0.4s 2.6s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+
+    <div class="card-container mx-4">
+        <!-- Header -->
+        <div class="profile-header">
+            <div class="logo-box">
+                <span class="logo-top">mega</span>
+                <span class="logo-bottom">MEDICAL</span>
+            </div>
+            <div class="avatar-circle">
+                <span class="avatar-initial">AK</span>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="mb-10">
+                <h1 class="text-3xl font-extrabold text-slate-800 flex items-baseline gap-2">
+                    김화찬 <span class="text-lg font-normal text-slate-400">Andrew Kim</span>
+                </h1>
+                <p class="text-sm font-bold text-orange-600 mt-1">기술연구소 기획인증팀 | 지사장</p>
+                <div class="h-1.5 w-12 bg-[#F15A24] mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Actions -->
+            <div class="space-y-4 mb-10">
+                <button onclick="downloadVCard()" class="w-full brand-btn py-4.5 rounded-2xl font-bold flex items-center justify-center gap-3 text-lg">
+                    <i class="fa-solid fa-address-book"></i> 연락처 저장하기
+                </button>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="tel:01068075802" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
+                        <i class="fa-solid fa-phone text-[#F15A24] text-xl group-hover:scale-110 transition-transform"></i>
+                        <span class="text-xs font-bold text-slate-600">휴대폰 (KR)</span>
+                    </a>
+                    <a href="mailto:hckim@megamedical.co.kr" class="soft-item py-4 rounded-2xl flex flex-col items-center justify-center gap-1 group">
+                        <i class="fa-solid fa-envelope text-[#F15A24] text-xl group-hover:scale-110 transition-transform"></i>
+                        <span class="text-xs font-bold text-slate-600">이메일</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Canada Info Badge Section -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-10">
+                <div class="canada-badge">R&D CENTER CANADA</div>
+                <p class="text-sm font-bold text-slate-700 mb-1">Μ. +1-778-834-3914</p>
+                <p class="text-xs text-slate-400 leading-relaxed">2625 Harrier Dr, Coquitlam, BC, Canada</p>
+            </div>
+
+            <!-- Website Link -->
+            <div class="mb-10 text-center">
+                <a href="http://www.megamedical.co.kr" target="_blank" class="text-sm font-bold text-orange-500 border-b-2 border-orange-100 pb-1 hover:border-orange-500 transition-all">
+                    www.megamedical.co.kr <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                </a>
+            </div>
+
+            <!-- HQ Info -->
+            <div class="space-y-5">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100">
+                        <i class="fa-solid fa-location-dot text-orange-500 text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-orange-400 font-bold uppercase tracking-widest">Headquarter (HQ)</p>
+                        <p class="text-sm text-slate-700 font-medium">강원특별자치도 원주시 동화공단로 110-1</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100">
+                        <i class="fa-solid fa-tty text-slate-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Office / Fax</p>
+                        <p class="text-sm text-slate-600">T. 070-5130-7801 / F. 033-733-0262</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-14 text-center">
+                <p class="text-[10px] text-slate-300 tracking-[0.2em] uppercase font-bold">We Do Your ENT / Mega Medical</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">연락처를 저장할 수 있습니다.</div>
+
+    <script>
+        function downloadVCard() {
+            const vCardData = [
+                "BEGIN:VCARD", "VERSION:3.0",
+                "N;CHARSET=UTF-8:김;화찬;;;",
+                "FN;CHARSET=UTF-8:김화찬 (Andrew Kim)",
+                "ORG;CHARSET=UTF-8:(주)메가메디칼 기술연구소",
+                "TITLE;CHARSET=UTF-8:지사장 / Branch Manager",
+                "TEL;TYPE=CELL:010-6807-5802",
+                "TEL;TYPE=WORK:070-5130-7801",
+                "EMAIL:hckim@megamedical.co.kr",
+                "ADR;TYPE=WORK;CHARSET=UTF-8:;;110-1, Donghwagongdan-ro, Munmak-eup;Wonju-si;Gangwon-do;26365;Korea",
+                "URL:http://www.megamedical.co.kr",
+                "END:VCARD"
+            ].join("\r\n");
+
+            const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = '지사장_김화찬_메가메디칼.vcf';
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a);
+            showToast();
+        }
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(() => { toast.className = ""; }, 3000);
+        }
+    </script>
+</body>
+</html>
